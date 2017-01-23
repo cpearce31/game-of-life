@@ -45,20 +45,54 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      width: 100,
-      height: 80,
+      width: 20,
+      height: 20,
       paused: false,
       cellSize: 20,
-      board: generateRandomBoard(4, 5)
+      board: generateRandomBoard(20, 20),
+      cells: []
     };
+  }
+
+  componentWillMount () {
+    this.setState({
+      cells: buildBoard(this.state.board, this.state.cellSize)
+    });
+  }
+
+  tick () {
+    let cells = this.state.cells;
+    let offset = this.state.width;
+    for (let i = 0; i < cells.length; i++) {
+      let count = 0;
+      let neighbors = [
+        cells[i - offset - 1],
+        cells[i - offset],
+        cells[i - offset + 1],
+        cells[i - 1],
+        cells[i + i],
+        cells[i + offset - 1],
+        cells[i + offset],
+        cells[i + offset + 1]
+      ];
+      for (let j = 0; j < neighbors.length; j++) {
+        if (neighbors[i].props.alive) {
+          count++;
+        }
+      }
+    }
   }
 
   render () {
     return (
       <div>
-        {buildBoard(this.state.board, this.state.cellSize)}
+        {this.state.cells}
       </div>
     );
+  }
+
+  componentDidMount () {
+    console.log(this.props);
   }
 }
 
