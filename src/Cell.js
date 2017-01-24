@@ -2,14 +2,16 @@ const React = require('react');
 
 class Cell extends React.Component {
   render () {
-    let test = this.props.alive ? '#' : '.';
+    let spanStyle = {
+      backgroundColor: this.props.alive ? 'blue' : '#d3d3d3'
+    };
     return <span
       className='cell-inner'
-      style={this.props.style}
+      style={Object.assign({}, this.props.style, spanStyle)}
       onClick={this.props.onClick}
       data-row={this.props.row}
       data-col={this.props.col}
-    >{test}</span>;
+    ></span>;
   }
 }
 

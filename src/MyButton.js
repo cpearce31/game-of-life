@@ -1,13 +1,15 @@
 const React = require('react');
 
 let styles = {
-  display: 'block',
-  width: 50,
+  display: 'inline-block',
   backgroundColor: 'blue',
   color: 'white',
   borderRadius: 5,
   textAlign: 'center',
-  padding: 10
+  padding: 10,
+  userSelect: 'none',
+  cursor: 'default',
+  margin: 10
 };
 
 class MyButton extends React.Component {

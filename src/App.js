@@ -74,17 +74,21 @@ class App extends Component {
     this.tick = this.tick.bind(this);
     this.handleCellClick = this.handleCellClick.bind(this);
     this.handleClearClick = this.handleClearClick.bind(this);
+    this.handlePauseClick = this.handlePauseClick.bind(this);
+    this.handleGenClick = this.handleGenClick.bind(this);
   }
 
   componentWillMount () {
     for (let y = 0; y < this.state.board.length; y++) {
       for (let x = 0; x < this.state.board[y].length; x++) {
         let cellStyle = {
+          border: '1px solid black',
           position: 'absolute',
           height: this.state.cellSize,
           width: this.state.cellSize,
           top: y * this.state.cellSize,
-          left: x * this.state.cellSize
+          left: x * this.state.cellSize,
+          userSelect: 'none'
         };
         cells.push(<Cell
           row={y}
@@ -97,6 +101,27 @@ class App extends Component {
           onClick={this.handleCellClick}
         />);
       }
+    }
+  }
+
+  handleGenClick () {
+    this.setState({
+      board: generateRandomBoard(this.state.height, this.state.width)
+    });
+  }
+
+  handlePauseClick () {
+    if (this.state.paused) {
+      this.setState({
+        interval: setInterval(this.tick, 200),
+        paused: false
+      });
+    } else {
+      clearInterval(this.state.interval);
+      this.setState({
+        interval: null,
+        paused: true
+      });
     }
   }
 
@@ -148,8 +173,10 @@ class App extends Component {
 
   render () {
     let boardStyle = {
-      height: this.state.cellSize * this.state.height,
-      width: this.state.cellSize * this.state.width
+      height: (this.state.cellSize * this.state.height) + 2,
+      width: this.state.cellSize * this.state.width,
+      position: 'relative'
+
     };
 
     for (let i = 0; i < cells.length; i++) {
@@ -160,12 +187,25 @@ class App extends Component {
       });
     }
     return (
-    <div>
-      <div style={boardStyle}>
-        {cells}
+      <div className='container'>
+        <div className='innerContainer'>
+          <div className='cellWrapper' style={boardStyle}>
+            {cells}
+          </div>
+          <div className='controlWrapper'>
+            <span className='hintText'>Click on a cell to change it's value!</span>
+            <MyButton text='Clear' onClick={this.handleClearClick}/>
+            <MyButton text='Random' onClick={this.handleGenClick}/>
+            <MyButton text={this.state.paused ? 'Start' : 'Pause'}
+              onClick={this.handlePauseClick}/>
+            <span className='hintText'>
+              <a href="https://en.wikipedia.org/wiki/Conway's_Game_of_Life">
+                Read about Conway's Game of Life.
+              </a>
+            </span>
+          </div>
+        </div>
       </div>
-      <MyButton text='Clear' onClick={this.handleClearClick}/>
-    </div>
     );
   }
 }

@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.innerContainer {
+  background-color: #9bb8e8;
+  padding: 20px 22px 5px 20px;
+  border: 10px solid blue;
+  border-radius: 30px;
+}
+
+.controlWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hintText {
+  margin: 0 40px;
+}
