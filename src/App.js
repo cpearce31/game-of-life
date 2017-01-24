@@ -103,7 +103,6 @@ class App extends Component {
         }
       }
     }
-    console.log(newBoard);
     this.setState({
       board: newBoard
     });
@@ -117,7 +116,9 @@ class App extends Component {
     for (let i = 0; i < cells.length; i++) {
       let y = cells[i].props.row;
       let x = cells[i].props.col;
-      cells[i] = <Cell alive={this.state.board[y][x] !== 0} />;
+      cells[i] = React.cloneElement(cells[i], {
+        alive: this.state.board[y][x] !== 0
+      });
     }
     console.log('state inside reder:');
     console.log(this.state);
