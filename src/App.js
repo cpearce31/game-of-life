@@ -49,11 +49,11 @@ class App extends Component {
     super(props);
 
     this.state = {
-      width: 20,
-      height: 20,
+      width: 60,
+      height: 40,
       paused: false,
       cellSize: 20,
-      board: generateRandomBoard(20, 20),
+      board: generateRandomBoard(40, 60),
       cells: []
     };
 
@@ -84,8 +84,6 @@ class App extends Component {
   }
 
   tick () {
-    console.log('tick fired. state: ');
-    console.log(this.state);
     let newBoard = JSON.parse(JSON.stringify(this.state.board));
     for (let y = 0; y < this.state.height; y++) {
       for (let x = 0; x < this.state.width; x++) {
@@ -109,10 +107,11 @@ class App extends Component {
   }
 
   componentDidMount () {
-    const t = setTimeout(this.tick, 1000);
+    const t = setInterval(this.tick, 200);
   }
 
   render () {
+    console.log(this.state.board);
     for (let i = 0; i < cells.length; i++) {
       let y = cells[i].props.row;
       let x = cells[i].props.col;
@@ -120,8 +119,6 @@ class App extends Component {
         alive: this.state.board[y][x] !== 0
       });
     }
-    console.log('state inside reder:');
-    console.log(this.state);
     return (
       <div>
         {cells}
