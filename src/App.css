@@ -22,3 +22,9 @@
 .hintText {
   margin: 0 40px;
 }
+
+@media (max-width: 780px) {
+  .hintText {
+    display: none;
+  }
+}

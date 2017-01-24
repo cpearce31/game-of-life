@@ -62,11 +62,11 @@ class App extends Component {
     super(props);
 
     this.state = {
-      width: 60,
-      height: 40,
+      width: this.props.width,
+      height: this.props.height,
       paused: false,
-      cellSize: 20,
-      board: generateRandomBoard(40, 60),
+      cellSize: this.props.cellSize,
+      board: generateRandomBoard(this.props.height, this.props.width),
       cells: [],
       interval: null
     };
@@ -176,7 +176,6 @@ class App extends Component {
       height: (this.state.cellSize * this.state.height) + 2,
       width: this.state.cellSize * this.state.width,
       position: 'relative'
-
     };
 
     for (let i = 0; i < cells.length; i++) {
