@@ -32,7 +32,7 @@ function countLiveNeighbors (y, x, board) {
       (coord) => coord[0] >= 0 &&
                  coord[1] >= 0 &&
                  coord[0] < board.length &&
-                 coord[1] < board.length
+                 coord[1] < board[0].length
     );
   }
   let coords = getAdjacentCoords(y, x, board);
@@ -107,7 +107,7 @@ class App extends Component {
   }
 
   componentDidMount () {
-    const t = setInterval(this.tick, 200);
+    const t = setTimeout(this.tick, 200);
   }
 
   render () {
