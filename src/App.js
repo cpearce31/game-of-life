@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 import Cell from './Cell.js';
+import MyButton from './MyButton.js';
 
 let cells = [];
+
+function generateClearBoard (height, width) {
+  let board = [];
+  let row = [];
+  for (let i = 0; i < width; i++) {
+    row.push(0);
+  }
+  for (let i = 0; i < height; i++) {
+    board.push(row);
+  }
+  return board;
+}
 
 function generateRandomBoard (height, width) {
   let board = [];
@@ -54,10 +67,13 @@ class App extends Component {
       paused: false,
       cellSize: 20,
       board: generateRandomBoard(40, 60),
-      cells: []
+      cells: [],
+      interval: null
     };
 
     this.tick = this.tick.bind(this);
+    this.handleCellClick = this.handleCellClick.bind(this);
+    this.handleClearClick = this.handleClearClick.bind(this);
   }
 
   componentWillMount () {
@@ -78,9 +94,27 @@ class App extends Component {
           style={cellStyle}
           className='cell'
           key={'y' + y + 'x' + x}
+          onClick={this.handleCellClick}
         />);
       }
     }
+  }
+
+  handleClearClick () {
+    clearInterval(this.state.interval);
+    this.setState({
+      board: generateClearBoard(this.state.height, this.state.width),
+      paused: true
+    });
+  }
+
+  handleCellClick (e) {
+    let changed = JSON.parse(JSON.stringify(this.state.board));
+    let target = changed[e.target.dataset.row][e.target.dataset.col];
+    changed[e.target.dataset.row][e.target.dataset.col] = target ? 0 : 1;
+    this.setState({
+      board: changed
+    });
   }
 
   tick () {
@@ -107,11 +141,17 @@ class App extends Component {
   }
 
   componentDidMount () {
-    const t = setTimeout(this.tick, 200);
+    this.setState({
+      interval: setInterval(this.tick, 200)
+    });
   }
 
   render () {
-    console.log(this.state.board);
+    let boardStyle = {
+      height: this.state.cellSize * this.state.height,
+      width: this.state.cellSize * this.state.width
+    };
+
     for (let i = 0; i < cells.length; i++) {
       let y = cells[i].props.row;
       let x = cells[i].props.col;
@@ -120,9 +160,12 @@ class App extends Component {
       });
     }
     return (
-      <div>
+    <div>
+      <div style={boardStyle}>
         {cells}
       </div>
+      <MyButton text='Clear' onClick={this.handleClearClick}/>
+    </div>
     );
   }
 }
